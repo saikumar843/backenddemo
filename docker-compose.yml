@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     image: saikumar843/node:latest
     ports:
-      - "8081:8081"
+      - "51005:51005"
     networks:
       - node
     volumes:
@@ -15,7 +15,7 @@ services:
       - mongo
       - mysql
   mongo:
-    container_name: backend_demo
+    container_name: mongo
     image: mongo
     restart: unless-stopped
     ports:
@@ -25,7 +25,7 @@ services:
     networks:
       - node
   mysql:
-    container_name: backend_demo
+    container_name: mysql
     image: mysql/mysql-server:latest
     restart: unless-stopped
     ports:
@@ -37,7 +37,7 @@ services:
       - /storage/docker/mysql-data:/var/lib/mysql
   nginx:
     image: nginx:latest
-    container_name: webserver
+    container_name: proxy
     restart: unless-stopped
     ports:
         - 80:80

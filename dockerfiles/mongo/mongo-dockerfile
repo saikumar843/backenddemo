@@ -1,0 +1,24 @@
+FROM amazonlinux:latest
+
+#Install Mongodb
+
+RUN yum install -y libcurl openssl supervisord wget tar gzip
+
+#Download and extract Mongodb
+
+WORKDIR /tmp
+
+# downloading Mongo
+RUN set -x \
+	&&wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-amazon2-4.2.2.tgz \
+	&&tar -xzvf mongodb-linux-x86_64-amazon2-4.2.2.tgz -C /tmp \
+	&&cp /tmp/mongodb-linux-x86_64-amazon2-4.2.2/bin/* /usr/bin
+
+#make directories for data and log files in Mongodb
+
+RUN set -x \
+	&&mkdir -p /var/lib/mongo \
+	&&mkdir -p /var/log/mongodb \
+	&&mkdir -p /data
+
+WORKDIR /data

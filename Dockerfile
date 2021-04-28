@@ -6,8 +6,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
-ADD package.json /tmp/package.json
-ADD package-lock.json /tmp/package-lock.json
+ADD package*.json /tmp/
 RUN cd /tmp && npm install && mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
 
 # From here we load our application's code in, therefore the previous docker
@@ -15,6 +14,8 @@ RUN cd /tmp && npm install && mkdir -p /opt/app && cp -a /tmp/node_modules /opt/
 WORKDIR /opt/app
 ADD . /opt/app
 
-EXPOSE 8081
+EXPOSE 51005
 
-CMD ["node", "start"]
+ENV NODE_ENV test
+
+CMD ["node", "index.js"]

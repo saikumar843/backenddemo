@@ -1,11 +1,12 @@
-version: '3.8'
+version: '3'
 services:
   nodejs:
     container_name: dicd_backend_demo
+    hostname: app-host
     restart: unless-stopped
     image: saikumar843/node:v1
     ports:
-      - "51005:51005"
+      - 51005:51005
     networks:
       - node
     volumes:
@@ -16,8 +17,12 @@ services:
       - mysql
   mongo:
     container_name: mongo
+    hostname: mymongo
     image: mongo
     restart: unless-stopped
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
     ports:
       - 27017:27017
     volumes:
@@ -26,6 +31,7 @@ services:
       - node
   mysql:
     container_name: mysql
+    hostname: mysqldb
     image: mysql/mysql-server
     restart: unless-stopped
     ports:
@@ -34,7 +40,18 @@ services:
       - node
     volumes:
       - ./storage/docker/mysql-data:/var/lib/mysql
+  nginx:
+    container_name: proxy
+    hostname: revproxy
+    image: nginx:v2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - node
 
 networks:
   node:
     driver: bridge
+

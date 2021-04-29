@@ -1,19 +1,15 @@
-FROM ubuntu
+FROM nginx
 
 #install nginx
-RUN apt-get update && apt-get -y upgrade && apt install -y nginx
+RUN apt-get update && apt-get -y upgrade
 
-#Run nginx
-RUN service nginx start
 
 #Removes the existing configuration file
-RUN rm /etc/nginx/sites-available/default 
+RUN rm /etc/nginx/conf.d/default.conf 
 
 #Replaces the desired configuration
-COPY ./default /etc/nginx/sites-available 
+COPY ./default.conf /etc/nginx/conf.d/ 
 
 #Adding SSL Selfsigned files to configuration
 COPY ./nginx-selfsigned.crt /etc/ssl/certs/ 
 COPY ./nginx-selfsigned.key /etc/ssl/private/
-
-CMD ["nginx", "-g", "daemon off;"]

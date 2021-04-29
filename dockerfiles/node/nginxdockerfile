@@ -1,0 +1,9 @@
+FROM ubuntu/nginx
+
+RUN rm /etc/nginx/sites-available/default # Removes the existing configuration file
+
+COPY ./default /etc/nginx/sites-available # Replaces the desired configuration
+
+#Adding SSL Selfsigned files to configuration
+COPY ./nginx-selfsigned.crt /etc/ssl/certs/ 
+COPY ./nginx/nginx-selfsigned.key /etc/ssl/private/
